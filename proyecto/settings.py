@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'bases',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'df41sfc',
+        'NAME': 'dj41sfc',
         'USER': 'jose',
         'PASSWORD': 'diaz1982',
         'HOST': 'localhost',
@@ -122,7 +124,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static", '/var/www/static/']
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = (BASE_DIR / 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
@@ -132,3 +134,5 @@ LOGOUT_REDIRECT_URL = '/login/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'bases.Usuario'
