@@ -33,3 +33,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
+
+class ClaseModelo(models.Model):
+    estado = models.BooleanField(default=True)
+    fc = models.DateTimeField(auto_now_add=True)
+    fm = models.DateTimeField(auto_now=True)
+    uc = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    um = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
