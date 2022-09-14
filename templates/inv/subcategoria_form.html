@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<!-- Earnings (Monthly) Card Example -->
+<form method="POST" class="form-inline">{% csrf_token %}
+    <div class="col-xl-12 col-md-12 mb-6">
+        <div class="card border-left-{% if obj %}warning{% else %}success{% endif %} shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            {% if obj %}Editar{% else %}Nueva{% endif %} Sub Categoría
+                        </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="row">
+                        <div class="col-5">
+                          <div class="input-group">
+                            {{ form.categoria }}
+                          </div>
+                        </div>
+                        <div class="col-5">
+                          <div class="input-group">
+                            {{ form.descripcion }}
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            {{ form.estado }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="row">
+                        <div class="col">
+                          <button type="submit" class="btn btn-flat btn-danger"><span class="fa fa-save"></span> Guardar</button>
+                          <a href="{% url 'inv_app:subcategorias_list' %}" class="btn btn-flat btn-success"><span class="fa fa-undo"> Cancelar</span></a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock page_content %}
+
+{% block js_page %}
+
+{% endblock js_page %}

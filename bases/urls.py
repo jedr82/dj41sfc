@@ -13,7 +13,4 @@ urlpatterns = [
     path('user-add/', user_admin, name='user_add'),
     path('user-modify/<int:pk>', user_admin, name='user_modify'),
 
-    path('catalogos/categorias/', HomePage.as_view(), name='categorias'),
-    path('catalogos/subcategorias/', HomePage.as_view(), name='subcategorias'),
-    path('movimientos/compras/', HomePage.as_view(), name='compras'),
 ]
