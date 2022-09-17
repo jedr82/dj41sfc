@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, UpdateView
 
-from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm
-from inv.models import Categoria, SubCategoria, Marca
+from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm
+from inv.models import Categoria, SubCategoria, Marca, UniMedida
 
 
 class CategoriaView(LoginRequiredMixin, ListView):
@@ -144,5 +144,49 @@ def marca_inactivar(request, id):
         marca.estado = False
         marca.save()
         return redirect('inv_app:marcas_list')
+
+    return render(request, template_name, contexto)
+
+class UniMedidaView(LoginRequiredMixin, ListView):
+    model = UniMedida
+    template_name = 'inv/unimedida_list.html'
+    context_object_name = 'obj'
+    login_url = 'bases_app:login'
+
+class UniMedidaNew(LoginRequiredMixin, CreateView):
+    model = UniMedida
+    template_name = 'inv/unimedida_form.html'
+    context_object_name = 'obj'
+    form_class = UniMedidaForm
+    success_url = reverse_lazy('inv_app:unimedidas_list')
+    login_url = 'bases_app:login'
+
+    def form_valid(self, form):
+        form.instance.uc = self.request.user
+        return super().form_valid(form)
+
+class UniMedidaEdit(LoginRequiredMixin, UpdateView):
+    model = UniMedida
+    template_name = 'inv/unimedida_form.html'
+    context_object_name = 'obj'
+    form_class = UniMedidaForm
+    success_url = reverse_lazy('inv_app:unimedidas_list')
+    login_url = 'bases_app:login'
+
+def unimedida_inactivar(request, id):
+    unimedida = UniMedida.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = 'inv/inactivar.html'
+
+    if not unimedida:
+        return redirect('inv_app:unimedidas_list')
+
+    if request.method == 'GET':
+        contexto = {'obj': unimedida}
+
+    if request.method == 'POST':
+        unimedida.estado = False
+        unimedida.save()
+        return redirect('inv_app:unimedidas_list')
 
     return render(request, template_name, contexto)

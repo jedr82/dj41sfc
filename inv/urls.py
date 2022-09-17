@@ -1,6 +1,5 @@
 from django.urls import path
-from inv.views import CategoriaView, CategoriaNew, CategoriaEdit, SubCategoriaView, SubCategoriaEdit, SubCategoriaNew, \
-    subcategoria_inactivar, MarcaView, MarcaNew, MarcaEdit, marca_inactivar,categoria_inactivar
+from inv.views import *
 
 app_name = 'inv_app'
 
@@ -22,4 +21,10 @@ urlpatterns = [
     path('marcas/add/', MarcaNew.as_view(), name='marca_add'),
     path('marcas/edit/<int:pk>', MarcaEdit.as_view(), name='marca_edit'),
     path('marcas/inactivar/<int:id>', marca_inactivar, name='marca_inactivar'),
+
+    #Unidades de Medidas
+    path('unimedidas/', UniMedidaView.as_view(), name='unimedidas_list'),
+    path('unimedida/add/', UniMedidaNew.as_view(), name='unimedida_add'),
+    path('unimedida/edit/<int:pk>', UniMedidaEdit.as_view(), name='unimedida_edit'),
+    path('unimedida/inactivar/<int:id>', unimedida_inactivar, name='unimedida_inactivar'),
 ]
