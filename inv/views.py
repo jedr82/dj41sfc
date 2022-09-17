@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, UpdateView
 
-from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm
-from inv.models import Categoria, SubCategoria, Marca, UniMedida
+from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm, ProductoForm
+from inv.models import Categoria, SubCategoria, Marca, UniMedida, Producto
 
 
 class CategoriaView(LoginRequiredMixin, ListView):
@@ -129,6 +129,10 @@ class MarcaEdit(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('inv_app:marcas_list')
     login_url = 'bases_app:login'
 
+    def form_valid(self, form):
+        form.instance.um = self.request.user.id
+        return super().form_valid(form)
+
 def marca_inactivar(request, id):
     marca = Marca.objects.filter(pk=id).first()
     contexto = {}
@@ -173,6 +177,10 @@ class UniMedidaEdit(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('inv_app:unimedidas_list')
     login_url = 'bases_app:login'
 
+    def form_valid(self, form):
+        form.instance.um = self.request.user.id
+        return super().form_valid(form)
+
 def unimedida_inactivar(request, id):
     unimedida = UniMedida.objects.filter(pk=id).first()
     contexto = {}
@@ -188,5 +196,53 @@ def unimedida_inactivar(request, id):
         unimedida.estado = False
         unimedida.save()
         return redirect('inv_app:unimedidas_list')
+
+    return render(request, template_name, contexto)
+
+class ProductoView(LoginRequiredMixin, ListView):
+    model = Producto
+    template_name = 'inv/producto_list.html'
+    context_object_name = 'obj'
+    login_url = 'bases_app:login'
+
+class ProductoNew(LoginRequiredMixin, CreateView):
+    model = Producto
+    template_name = 'inv/producto_form.html'
+    context_object_name = 'obj'
+    form_class = ProductoForm
+    success_url = reverse_lazy('inv_app:productos_list')
+    login_url = 'bases_app:login'
+
+    def form_valid(self, form):
+        form.instance.uc = self.request.user
+        return super().form_valid(form)
+
+class ProductoEdit(LoginRequiredMixin, UpdateView):
+    model = Producto
+    template_name = 'inv/producto_form.html'
+    context_object_name = 'obj'
+    form_class = ProductoForm
+    success_url = reverse_lazy('inv_app:productos_list')
+    login_url = 'bases_app:login'
+
+    def form_valid(self, form):
+        form.instance.um = self.request.user.id
+        return super().form_valid(form)
+
+def producto_inactivar(request, id):
+    producto = Producto.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = 'inv/inactivar.html'
+
+    if not producto:
+        return redirect('inv_app:productos_list')
+
+    if request.method == 'GET':
+        contexto = {'obj': producto}
+
+    if request.method == 'POST':
+        producto.estado = False
+        producto.save()
+        return redirect('inv_app:productos_list')
 
     return render(request, template_name, contexto)

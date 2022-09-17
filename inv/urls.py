@@ -27,4 +27,10 @@ urlpatterns = [
     path('unimedida/add/', UniMedidaNew.as_view(), name='unimedida_add'),
     path('unimedida/edit/<int:pk>', UniMedidaEdit.as_view(), name='unimedida_edit'),
     path('unimedida/inactivar/<int:id>', unimedida_inactivar, name='unimedida_inactivar'),
+
+    #Unidades de Medidas
+    path('products/', ProductoView.as_view(), name='productos_list'),
+    path('producto/add/', ProductoNew.as_view(), name='producto_add'),
+    path('producto/edit/<int:pk>', ProductoEdit.as_view(), name='producto_edit'),
+    path('producto/inactivar/<int:id>', producto_inactivar, name='producto_inactivar'),
 ]
