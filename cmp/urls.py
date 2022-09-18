@@ -9,4 +9,5 @@ urlpatterns = [
     path('proveedor/add/', ProveedorNew.as_view(), name='proveedor_add'),
     path('proveedor/edit/<int:pk>', ProveedorEdit.as_view(), name='proveedor_edit'),
     path('proveedor/inactivar/<int:id>', proveedor_inactivar, name='proveedor_inactivar'),
+    path('proveedor/inactivar_modal/<int:id>', proveedor_inactivar_modal, name='proveedor_inactivar_modal'),
 ]

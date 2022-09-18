@@ -4,6 +4,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Listado de Proveedores</h6>
+        {% if perms.cmp.add_proveedor %}
         <div class="dropdown no-arrow">
             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,6 +16,7 @@
                 <a class="dropdown-item" href="#" onclick="return abrir_modal('{% url 'cmp_app:proveedor_add' %}')" ><i class="far fa-calendar-plus"></i> Nuevo</a>
             </div>
         </div>
+        {% endif %}
     </div>
     <!-- Card Body -->
     <div class="card-body">
@@ -30,7 +32,9 @@
             <th>Teléfono</th>
             <th>Email</th>
             <th>Estado</th>
+            {% if perms.cmp %}
             <th class="all">Acciones</th>
+            {% endif %}
             </thead>
             <tbody>
             {% for item in obj %}
@@ -43,9 +47,15 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.estado|yesno:"Activo,Inactivo" }}</td>
                 <td>
+                    {% if perms.cmp.change_proveedor %}
                     <button class="btn btn-warning btn-circle btn-sm" onclick="return abrir_modal('{% url 'cmp_app:proveedor_edit' item.id %}')">
                         <i class="far fa-edit"></i></button>
-                    <a href="{% url 'cmp_app:proveedor_inactivar' item.id %}" class="btn btn-danger btn-circle btn-sm" role="button"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
+                    {% if perms.cmp.delete_proveedor %}
+                    <button class="btn btn-danger btn-circle btn-sm" onclick="return abrir_modal('{% url 'cmp_app:proveedor_inactivar_modal' item.id %}')">
+                        <i class="far fa-thumbs-down"></i>
+                    </button>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

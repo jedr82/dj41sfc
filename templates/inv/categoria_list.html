@@ -6,6 +6,7 @@
     <!-- Card Header - Dropdown -->
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Listado de Categorías</h6>
+        {% if perms.inv.add_categoria %}
         <div class="dropdown no-arrow">
             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,10 +16,9 @@
                  aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Acciones:</div>
                 <a class="dropdown-item" href="{% url 'inv_app:categoria_add' %}">Nuevo</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
             </div>
         </div>
+        {% endif %}
     </div>
     <!-- Card Body -->
     <div class="card-body">
@@ -43,9 +43,13 @@
                 <td>{{ item.fc|date:"d/m/Y H:i:s" }}</td>
                 <td>{{ item.fm|date:"d/m/Y H:i:s" }}</td>
                 <td>
+                    {% if perms.inv.change_categoria %}
                     <a href="{% url 'inv_app:categoria_edit' item.id %}" class="btn btn-warning btn-circle btn-sm"
                        role="button"><i class="far fa-edit"></i></a>
+                    {% endif %}
+                    {% if perms.inv.delete_categoria %}
                     <a href="{% url 'inv_app:categoria_inactivar' item.id %}" class="btn btn-danger btn-circle btn-sm" role="button"><i class="far fa-trash-alt"></i></a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

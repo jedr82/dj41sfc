@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
 from cmp.forms import ProveedorForm
 from cmp.models import Proveedor
-from inv.models import Producto
 
 
 # Create your views here.
@@ -56,3 +56,23 @@ def proveedor_inactivar(request, id):
         return redirect('cmp_app:proveedores_list')
 
     return render(request, template_name, contexto)
+
+def proveedor_inactivar_modal(request, id):
+    prov = Proveedor.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = 'cmp/inactivar_modal.html'
+
+    if not prov:
+        return HttpResponse('Proveedor no existe: '+str(id))
+
+    if request.method=='GET':
+        contexto = {'obj': prov}
+
+    if request.method=='POST':
+        prov.estado = False
+        prov.save()
+        contexto = {'obj':'OK'}
+        return HttpResponse('Proveedor inactivado')
+
+    return render(request, template_name, contexto)
+

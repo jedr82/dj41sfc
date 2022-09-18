@@ -1,26 +1,11 @@
-{% load static %}
+{% extends 'base/base.html' %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% block side_bar %} {% endblock side_bar%}
+{% block top_bar %} {% endblock top_bar %}
+{% block page_content %} {% endblock page_content %}
+{% block footer %} {% endblock footer %}
 
-    <title>SFC HALU System | Login</title>
-    <!-- Custom fonts for this template-->
-    <link href="{% static 'base/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="{% static 'base/css/sb-admin-2.min.css' %}" rel="stylesheet">
-
-</head>
-
-<body class="bg-gradient-primary">
+{% block login %}
 <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
@@ -36,35 +21,14 @@
                                     <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                 </div>
                                 <form method="post">{% csrf_token %}
-                                    <small class="text-danger">
-                                        {% if messages %}
-                                          {% for m in messages %}
-                                            {{ m }}<br>
-                                          {% endfor %}
-                                        {% endif %}
-
-                                        {% if form.errors %}
-                                          {% for field in form %}
-                                            {% if field.errors %}
-                                              {% for error in field.errors %}
-                                                {{ error|escape }} ({{ field.name }})<br>
-                                              {% endfor %}
-                                            {% endif %}
-                                          {% endfor %}
-
-                                          {% if form.non_field_errors %}
-                                            {% for error in form.non_field_errors %}
-                                              {{ error|escape }}<br>
-                                            {% endfor %}
-                                          {% endif %}
-                                        {% endif %}
-                                    </small>
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" placeholder="Ingrese su email" name="username"
+                                        <input type="email" class="form-control form-control-user"
+                                               placeholder="Ingrese su email" name="username"
                                                id="id_username">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user" placeholder="Password"
+                                        <input type="password" class="form-control form-control-user"
+                                               placeholder="Password"
                                                name="password" id="id_password">
                                     </div>
                                     <div class="row">
@@ -84,15 +48,27 @@
         </div>
     </div>
 </div>
+{% endblock login %}
 
-<!-- Bootstrap core JavaScript-->
-<script src="{% static 'base/vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'base/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- Core plugin JavaScript-->
-<script src="{% static 'base/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-<!-- Custom scripts for all pages-->
-<script src="{% static 'base/js/sb-admin-2.min.js' %}"></script>
+{% block js_page %}
+<script>
+{% if form.errors %}
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                mensaje('{{ error|escape }})', 'red');
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
 
-</body>
-</html>
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            mensaje('{{ error|escape }})', 'red');
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+</script>
+{% endblock js_page %}
+
 

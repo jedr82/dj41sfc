@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Sistema de Compras y Ventas v1</title>
     <!-- Custom fonts for this template-->
     <link href="{% static 'base/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link
@@ -19,9 +19,11 @@
     <link href="{% static 'base/css/sb-admin-2.min.css' %}" rel="stylesheet">
     <!-- Custom styles for DataTable -->
     <link href="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <!-- JQueryConfirm -->
+    <link href="{% static 'base/vendor/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}" rel="stylesheet">
 </head>
 
-<body id="page-top">
+<body id="page-top" class="bg-gradient-primary">
     {% block side_bar %}
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -58,16 +60,27 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Inventario:</h6>
+                        {% if perms.inv.view_categoria %}
                         <a class="collapse-item" href="{% url 'inv_app:categorias_list' %}">Categorías</a>
+                        {% endif %}
+                        {% if perms.inv.view_subcategoria %}
                         <a class="collapse-item" href="{% url 'inv_app:subcategorias_list' %}">Sub Categorías</a>
+                        {% endif %}
+                        {% if perms.inv.view_marca %}
                         <a class="collapse-item" href="{% url 'inv_app:marcas_list' %}">Marcas</a>
+                        {% endif %}
+                        {% if perms.inv.view_unimedida %}
                         <a class="collapse-item" href="{% url 'inv_app:unimedidas_list' %}">Unidades de Medidas</a>
+                        {% endif %}
+                        {% if perms.inv.view_producto %}
                         <a class="collapse-item" href="{% url 'inv_app:productos_list' %}">Productos</a>
-                        <a class="collapse-item" href="#">Cards</a>
+                        {% endif %}
                     </div>
                      <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Compras:</h6>
-                        <a class="collapse-item" href="{% url 'cmp_app:proveedores_list' %}">Proveedor</a>
+                         <h6 class="collapse-header">Compras:</h6>
+                         {% if perms.cmp.view_proveedor %}
+                         <a class="collapse-item" href="{% url 'cmp_app:proveedores_list' %}">Proveedor</a>
+                         {% endif %}
                      </div>
                 </div>
             </li>
@@ -407,7 +420,8 @@
     <!-- DataTable plugins -->
     <script src="{% static 'base/vendor/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
-    {% block js_page %} {% endblock js_page %}
+    <!-- JQueryConfirm plugins -->
+    <script src="{% static 'base/vendor/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
 
     {% block control_modal %}
     <script>
@@ -428,7 +442,30 @@
             $('#popup').modal('hide');
             return false;
         }
+
+        function mensaje(msg, color='green'){
+            if (color=='success'){
+                color='green';
+            }
+            if (color=='error'){
+                color='red';
+            }
+            $.alert({
+                title: '',
+                theme: 'material',
+                type: color,
+                content: msg
+            });
+        }
+
+        {% if messages %}
+            {% for message in messages %}
+                mensaje('{{ message }}','{{ message.tags }}');
+            {% endfor %}
+        {% endif %}
     </script>
     {% endblock control_modal %}
+
+    {% block js_page %} {% endblock js_page %}
 </body>
 </html>

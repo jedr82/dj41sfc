@@ -1,4 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, UpdateView
@@ -7,31 +9,36 @@ from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm,
 from inv.models import Categoria, SubCategoria, Marca, UniMedida, Producto
 
 
-class CategoriaView(LoginRequiredMixin, ListView):
+class CategoriaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'inv.view_categoria'
     model = Categoria
     template_name = 'inv/categoria_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class CategoriaNew(LoginRequiredMixin, CreateView):
+class CategoriaNew(SuccessMessageMixin,PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    permission_required = 'inv.add_categoria'
     model = Categoria
     template_name = 'inv/categoria_form.html'
     context_object_name = 'obj'
     form_class = CategoriaForm
     success_url = reverse_lazy('inv_app:categorias_list')
     login_url = 'bases_app:login'
+    success_message = 'Nueva categoría creada correctamente'
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class CategoriaEdit(LoginRequiredMixin, UpdateView):
+class CategoriaEdit(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = 'inv.change_categoria'
     model = Categoria
     template_name = 'inv/categoria_form.html'
     context_object_name = 'obj'
     form_class = CategoriaForm
     success_url = reverse_lazy('inv_app:categorias_list')
     login_url = 'bases_app:login'
+    success_message = 'Categoría actualizada correctamente'
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -51,35 +58,41 @@ def categoria_inactivar(request, id):
     if request.method == 'POST':
         cat.estado = False
         cat.save()
+        messages.error(request, 'Categoria inactivada')
         return redirect('inv_app:categorias_list')
 
     return render(request, template_name, contexto)
 
-class SubCategoriaView(LoginRequiredMixin, ListView):
+class SubCategoriaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'inv.view_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class SubCategoriaNew(LoginRequiredMixin, CreateView):
+class SubCategoriaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    permission_required = 'inv.add_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_form.html'
     context_object_name = 'obj'
     form_class = SubCategoriaForm
     success_url = reverse_lazy('inv_app:subcategorias_list')
     login_url = 'bases_app:login'
+    success_message = 'Nueva subcategoría creada correctamente'
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class SubCategoriaEdit(LoginRequiredMixin, UpdateView):
+class SubCategoriaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    permission_required = 'inv.change_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_form.html'
     context_object_name = 'obj'
     form_class = SubCategoriaForm
     success_url = reverse_lazy('inv_app:subcategorias_list')
     login_url = 'bases_app:login'
+    success_message = 'SubCategoría actualizada correctamente'
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -99,35 +112,41 @@ def subcategoria_inactivar(request, id):
     if request.method == 'POST':
         subcat.estado = False
         subcat.save()
+        messages.error(request, 'SubCategoria inactivada')
         return redirect('inv_app:subcategorias_list')
 
     return render(request, template_name, contexto)
 
-class MarcaView(LoginRequiredMixin, ListView):
+class MarcaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'inv.view_marca'
     model = Marca
     template_name = 'inv/marca_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class MarcaNew(LoginRequiredMixin, CreateView):
+class MarcaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    permission_required = 'inv.add_marca'
     model = Marca
     template_name = 'inv/marca_form.html'
     context_object_name = 'obj'
     form_class = MarcaForm
     success_url = reverse_lazy('inv_app:marcas_list')
     login_url = 'bases_app:login'
+    success_message = 'Nueva marca creada correctamente'
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class MarcaEdit(LoginRequiredMixin, UpdateView):
+class MarcaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    permission_required = 'inv.change_marca'
     model = Marca
     template_name = 'inv/marca_form.html'
     context_object_name = 'obj'
     form_class = MarcaForm
     success_url = reverse_lazy('inv_app:marcas_list')
     login_url = 'bases_app:login'
+    success_message = 'Marca actualizada correctamente'
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -147,35 +166,41 @@ def marca_inactivar(request, id):
     if request.method == 'POST':
         marca.estado = False
         marca.save()
+        messages.error(request, 'Marca inactivada')
         return redirect('inv_app:marcas_list')
 
     return render(request, template_name, contexto)
 
-class UniMedidaView(LoginRequiredMixin, ListView):
+class UniMedidaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'inv.view_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class UniMedidaNew(LoginRequiredMixin, CreateView):
+class UniMedidaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    permission_required = 'inv.add_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_form.html'
     context_object_name = 'obj'
     form_class = UniMedidaForm
     success_url = reverse_lazy('inv_app:unimedidas_list')
     login_url = 'bases_app:login'
+    success_message = 'Nueva unidad de medida creada correctamente'
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class UniMedidaEdit(LoginRequiredMixin, UpdateView):
+class UniMedidaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    permission_required = 'inv.change_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_form.html'
     context_object_name = 'obj'
     form_class = UniMedidaForm
     success_url = reverse_lazy('inv_app:unimedidas_list')
     login_url = 'bases_app:login'
+    success_message = 'Unidad de medida actualizada correctamente'
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -195,35 +220,41 @@ def unimedida_inactivar(request, id):
     if request.method == 'POST':
         unimedida.estado = False
         unimedida.save()
+        messages.error(request, 'Unidad de medida inactivada')
         return redirect('inv_app:unimedidas_list')
 
     return render(request, template_name, contexto)
 
-class ProductoView(LoginRequiredMixin, ListView):
+class ProductoView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'inv.view_producto'
     model = Producto
     template_name = 'inv/producto_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class ProductoNew(LoginRequiredMixin, CreateView):
+class ProductoNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    permission_required = 'inv.add_producto'
     model = Producto
     template_name = 'inv/producto_form.html'
     context_object_name = 'obj'
     form_class = ProductoForm
     success_url = reverse_lazy('inv_app:productos_list')
     login_url = 'bases_app:login'
+    success_message = 'Nuevo producto creado correctamente'
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class ProductoEdit(LoginRequiredMixin, UpdateView):
+class ProductoEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    permission_required = 'inv.change_producto'
     model = Producto
     template_name = 'inv/producto_form.html'
     context_object_name = 'obj'
     form_class = ProductoForm
     success_url = reverse_lazy('inv_app:productos_list')
     login_url = 'bases_app:login'
+    success_message = 'Producto actualizado correctamente'
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -243,6 +274,7 @@ def producto_inactivar(request, id):
     if request.method == 'POST':
         producto.estado = False
         producto.save()
+        messages.error(request, 'Producto inactivado')
         return redirect('inv_app:productos_list')
 
     return render(request, template_name, contexto)
