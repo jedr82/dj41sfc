@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -9,7 +10,6 @@ from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm,
 from inv.models import Categoria, SubCategoria, Marca, UniMedida, Producto
 
 from bases.views import SinPrivilegios
-
 
 class CategoriaView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_categoria'
@@ -46,6 +46,8 @@ class CategoriaEdit(SuccessMessageMixin, SinPrivilegios, LoginRequiredMixin, Upd
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+@login_required(login_url='/login/')
+@permission_required('inv.change_categoria', login_url='bases_app:sin_privilegios')
 def categoria_inactivar(request, id):
     cat = Categoria.objects.filter(pk=id).first()
     contexto = {}
@@ -100,6 +102,8 @@ class SubCategoriaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, 
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+@login_required(login_url='/login/')
+@permission_required('inv.change_subcategoria', login_url='bases_app:sin_privilegios')
 def subcategoria_inactivar(request, id):
     subcat = SubCategoria.objects.filter(pk=id).first()
     contexto = {}
@@ -154,6 +158,8 @@ class MarcaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, UpdateV
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+@login_required(login_url='/login/')
+@permission_required('inv.change_marca', login_url='bases_app:sin_privilegios')
 def marca_inactivar(request, id):
     marca = Marca.objects.filter(pk=id).first()
     contexto = {}
@@ -208,6 +214,8 @@ class UniMedidaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, Upd
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+@login_required(login_url='/login/')
+@permission_required('inv.change_unimedida', login_url='bases_app:sin_privilegios')
 def unimedida_inactivar(request, id):
     unimedida = UniMedida.objects.filter(pk=id).first()
     contexto = {}
@@ -262,6 +270,8 @@ class ProductoEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, Upda
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+@login_required(login_url='/login/')
+@permission_required('inv.change_producto', login_url='bases_app:sin_privilegios')
 def producto_inactivar(request, id):
     producto = Producto.objects.filter(pk=id).first()
     contexto = {}

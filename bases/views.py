@@ -65,10 +65,13 @@ def user_admin(request, pk=None):
 
 class HomeSinPrivilegios(generic.TemplateView):
     template_name = 'bases/sin_privilegios.html'
+
 class SinPrivilegios(PermissionRequiredMixin):
     raise_exception = False
     redirect_field_name = 'redirect_to'
 
     def handle_no_permission(self):
-        self.login_url = 'bases_app:sin_privilegios'
+        from django.contrib.auth.models import AnonymousUser
+        if not self.request.user==AnonymousUser():
+            self.login_url = 'bases_app:sin_privilegios'
         return HttpResponseRedirect(reverse_lazy(self.login_url))
