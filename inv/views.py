@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
@@ -8,15 +8,17 @@ from django.views.generic import ListView, CreateView, UpdateView
 from inv.forms import CategoriaForm, SubCategoriaForm, MarcaForm, UniMedidaForm, ProductoForm
 from inv.models import Categoria, SubCategoria, Marca, UniMedida, Producto
 
+from bases.views import SinPrivilegios
 
-class CategoriaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+
+class CategoriaView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_categoria'
     model = Categoria
     template_name = 'inv/categoria_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class CategoriaNew(SuccessMessageMixin,PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class CategoriaNew(SuccessMessageMixin,SinPrivilegios, LoginRequiredMixin, CreateView):
     permission_required = 'inv.add_categoria'
     model = Categoria
     template_name = 'inv/categoria_form.html'
@@ -30,7 +32,7 @@ class CategoriaNew(SuccessMessageMixin,PermissionRequiredMixin, LoginRequiredMix
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class CategoriaEdit(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class CategoriaEdit(SuccessMessageMixin, SinPrivilegios, LoginRequiredMixin, UpdateView):
     permission_required = 'inv.change_categoria'
     model = Categoria
     template_name = 'inv/categoria_form.html'
@@ -63,14 +65,14 @@ def categoria_inactivar(request, id):
 
     return render(request, template_name, contexto)
 
-class SubCategoriaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class SubCategoriaView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class SubCategoriaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+class SubCategoriaNew(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, CreateView):
     permission_required = 'inv.add_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_form.html'
@@ -84,7 +86,7 @@ class SubCategoriaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequire
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class SubCategoriaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+class SubCategoriaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     permission_required = 'inv.change_subcategoria'
     model = SubCategoria
     template_name = 'inv/subcategoria_form.html'
@@ -117,14 +119,14 @@ def subcategoria_inactivar(request, id):
 
     return render(request, template_name, contexto)
 
-class MarcaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class MarcaView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_marca'
     model = Marca
     template_name = 'inv/marca_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class MarcaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+class MarcaNew(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, CreateView):
     permission_required = 'inv.add_marca'
     model = Marca
     template_name = 'inv/marca_form.html'
@@ -138,7 +140,7 @@ class MarcaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin,
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class MarcaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+class MarcaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     permission_required = 'inv.change_marca'
     model = Marca
     template_name = 'inv/marca_form.html'
@@ -171,14 +173,14 @@ def marca_inactivar(request, id):
 
     return render(request, template_name, contexto)
 
-class UniMedidaView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class UniMedidaView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class UniMedidaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+class UniMedidaNew(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, CreateView):
     permission_required = 'inv.add_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_form.html'
@@ -192,7 +194,7 @@ class UniMedidaNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMi
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class UniMedidaEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+class UniMedidaEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     permission_required = 'inv.change_unimedida'
     model = UniMedida
     template_name = 'inv/unimedida_form.html'
@@ -225,14 +227,14 @@ def unimedida_inactivar(request, id):
 
     return render(request, template_name, contexto)
 
-class ProductoView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class ProductoView(SinPrivilegios, LoginRequiredMixin, ListView):
     permission_required = 'inv.view_producto'
     model = Producto
     template_name = 'inv/producto_list.html'
     context_object_name = 'obj'
     login_url = 'bases_app:login'
 
-class ProductoNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, CreateView):
+class ProductoNew(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, CreateView):
     permission_required = 'inv.add_producto'
     model = Producto
     template_name = 'inv/producto_form.html'
@@ -246,7 +248,7 @@ class ProductoNew(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMix
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class ProductoEdit(PermissionRequiredMixin, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+class ProductoEdit(SinPrivilegios, SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     permission_required = 'inv.change_producto'
     model = Producto
     template_name = 'inv/producto_form.html'

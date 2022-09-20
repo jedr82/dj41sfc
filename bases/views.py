@@ -1,7 +1,8 @@
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -61,3 +62,13 @@ def user_admin(request, pk=None):
         return redirect('bases_app:users_list')
 
     return render(request, template_name, context)
+
+class HomeSinPrivilegios(generic.TemplateView):
+    template_name = 'bases/sin_privilegios.html'
+class SinPrivilegios(PermissionRequiredMixin):
+    raise_exception = False
+    redirect_field_name = 'redirect_to'
+
+    def handle_no_permission(self):
+        self.login_url = 'bases_app:sin_privilegios'
+        return HttpResponseRedirect(reverse_lazy(self.login_url))
