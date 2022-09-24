@@ -21,6 +21,8 @@
     <link href="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
     <!-- JQueryConfirm -->
     <link href="{% static 'base/vendor/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}" rel="stylesheet">
+    <!-- JQuery DateTimePicker -->
+    <link href="{% static 'base/vendor/datetimepicker/jquery.datetimepicker.min.css' %}" rel="stylesheet">
 </head>
 
 <body id="page-top" class="bg-gradient-primary">
@@ -80,6 +82,9 @@
                          <h6 class="collapse-header">Compras:</h6>
                          {% if perms.cmp.view_proveedor %}
                          <a class="collapse-item" href="{% url 'cmp_app:proveedores_list' %}">Proveedor</a>
+                         {% endif %}
+                         {% if perms.cmp.view_comprasenc %}
+                         <a class="collapse-item" href="{% url 'cmp_app:compras_list' %}">Compras</a>
                          {% endif %}
                      </div>
                 </div>
@@ -422,6 +427,14 @@
     <script src="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
     <!-- JQueryConfirm plugins -->
     <script src="{% static 'base/vendor/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
+    <!-- JQuery Datetime Pickeer plugins -->
+    <script src="{% static 'base/vendor/datetimepicker/jquery.datetimepicker.full.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            jQuery.datetimepicker.setLocale('es');
+        });
+    </script>
 
     {% block control_modal %}
     <script>
