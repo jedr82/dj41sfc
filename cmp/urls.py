@@ -1,5 +1,6 @@
 from django.urls import path
 from cmp.views import *
+from .reportes import reporte_compras
 
 app_name = 'cmp_app'
 
@@ -16,4 +17,6 @@ urlpatterns = [
     path('compras/new', compras, name='compras_new'),
     path('compra/edit/<int:compra_id>', compras, name='compra_edit'),
     path('compra/<int:compra_id>/delete/<int:pk>', DetalleDelete.as_view(), name='detalle_delete'),
+
+    path('compras/listado', reporte_compras, name='compras_print_all'),
 ]
