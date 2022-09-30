@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-secondary"><i class="fas fa-chart-bar"></i> {{ title }}</h6>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered" id="tbl_repcompras">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Factura</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Total</th>
+                <th scope="col">Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'rep_app:compras_all' %}" class="btn btn-success btn-flat btn-sm">
+            <i class="fas fa-sync"></i> Actualizar
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_page %}
+<script>
+    $(document).ready(function() {
+        $('#tbl_repcompras').DataTable({
+            language: {
+                decimal: ",",
+                thousands: ".",
+            },
+        });
+    });
+</script>
+{% endblock js_page %}

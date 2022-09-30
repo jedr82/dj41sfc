@@ -14,7 +14,7 @@
                  aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Acciones:</div>
                 <a class="dropdown-item" href="{% url 'cmp_app:compras_new' %}"><i class="far fa-calendar-plus"></i> Nuevo</a>
-                <a class="dropdown-item" href="{% url 'cmp_app:compras_print_all %}"><i class="fas fa-print"></i> Listado</a>
+                <a class="dropdown-item" href="{% url 'cmp_app:compras_print_all' %}" target="reportes"><i class="fas fa-print"></i> Listado</a>
             </div>
         </div>
         {% endif %}
@@ -28,9 +28,9 @@
             <thead>
             <th>Id</th>
             <th>Fecha</th>
-            <th>Observ.</th>
+            <th>Proveedor</th>
             <th>Factura</th>
-            <th>Fecha Fac</th>
+            <th>Fecha Factura</th>
             <th>SubTotal</th>
             <th>Desc</th>
             <th>Total</th>
@@ -41,17 +41,18 @@
             {% for item in obj %}
             <tr>
                 <td>{{ item.id }}</td>
-                <td>{{ item.fecha_compra }}</td>
-                <td>{{ item.observacion }}</td>
+                <td>{{ item.fecha_compra|date:"d/m/Y" }}</td>
+                <td>{{ item.proveedor }}</td>
                 <td>{{ item.nro_factura }}</td>
-                <td>{{ item.fecha_factura }}</td>
+                <td>{{ item.fecha_factura|date:"d/m/Y" }}</td>
                 <td>{{ item.subtotal }}</td>
                 <td>{{ item.descuento }}</td>
                 <td>{{ item.total }}</td>
                 <td>{{ item.estado|yesno:"Activo,Inactivo" }}</td>
                 <td>
-                    <a class="btn btn-warning btn-circle btn-sm" href="{% url 'cmp_app:compra_edit' item.id %}">
-                        <i class="far fa-edit"></i></a>
+                    <a class="btn btn-warning btn-circle btn-sm" href="{% url 'cmp_app:compra_edit' item.id %}"><i class="far fa-edit"></i></a>
+                    <a class="btn btn-success btn-circle btn-sm" href="{% url 'cmp_app:compras_print_one' item.id %}" target="reportes">
+                        <i class="fas fa-print"></i></a>
                 </td>
             </tr>
             {% endfor %}

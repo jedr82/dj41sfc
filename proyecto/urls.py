@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('bases.urls','bases_app'), name='bases'),
     path('inv/', include('inv.urls','inv_app'), name='inv'),
     path('cmp/', include('cmp.urls','cmp_app'), name='cmp'),
+    path('rep/', include('reporte.urls','rep_app'), name='rep'),
 ]
