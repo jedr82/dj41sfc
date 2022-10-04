@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'inv',
     'cmp',
     'reporte',
+    'fac',
 ]
 
 MIDDLEWARE = [

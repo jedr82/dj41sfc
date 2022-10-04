@@ -12,7 +12,7 @@
     }
 
     .table td .numero {
-        text-align: center;
+        text-align: right;
     }
     </style>
 </head>
@@ -65,6 +65,38 @@
                 <td class="numero">{{ item.descuento }}</td>
                 <td class="numero">{{ item.total }}</td>
             {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><h4>SubTotal</h4></td>
+                <td class="numero"><h4>{{ encabezado.subtotal }}</h4></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><h4>Descuento</h4></td>
+                <td class="numero"><h4>{{ encabezado.descuento }}</h4></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><h4>Total</h4></td>
+                <td class="numero"><h4>{{ encabezado.total }}</h4></td>
+            </tr>
             </tbody>
         </table>
     </div>

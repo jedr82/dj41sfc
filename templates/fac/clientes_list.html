@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Listado de Clientes</h6>
+        <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                 aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Acciones:</div>
+                <a class="dropdown-item" href="#" onclick="return abrir_modal('{# url 'cmp_app:proveedor_add' #}')" ><i class="far fa-calendar-plus"></i> Nuevo</a>
+            </div>
+        </div>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        {% if not obj %}
+        <div class="alert alert-info">No hay clientes</div>
+        {% else %}
+        <table class="table table-sm table-striped table-hover dt-responsive nowrap" id="tbl_listado">
+            <thead>
+            <th>Id</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>tipo</th>
+            <th>Teléfono</th>
+            <th>Estado</th>
+            <th class="all">Acciones</th>
+            </thead>
+            <tbody>
+            {% for item in obj %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.direccion }}</td>
+                <td>{{ item.contacto }}</td>
+                <td>{{ item.telefono }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.estado|yesno:"Activo,Inactivo" }}</td>
+                <td>
+                    <button class="btn btn-warning btn-circle btn-sm" onclick="return abrir_modal('{# url 'cmp_app:proveedor_edit' item.id #}')">
+                        <i class="far fa-edit"></i></button>
+                    <button class="btn btn-danger btn-circle btn-sm" onclick="return abrir_modal('{# url 'cmp_app:proveedor_inactivar_modal' item.id #}')">
+                        <i class="far fa-thumbs-down"></i>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock page_content %}
+
+{% block js_page %}
+<script>
+    $(document).ready(function() {
+        $('#tbl_listado').DataTable();
+    });
+</script>
+{% endblock js_page %}
