@@ -1,5 +1,7 @@
+from email.policy import default
 from django.db import models
-from bases.models import ClaseModelo
+from bases.models import ClaseModelo, ClaseModelo2
+from cmp.models import Producto
 
 class Cliente(ClaseModelo):
     NAT = 'Natural'
@@ -21,3 +23,42 @@ class Cliente(ClaseModelo):
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
+
+class FacturaEnc(ClaseModelo2):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    subtotal = models.FloatField(default=0)
+    descuento = models.FloatField(default=0)
+    total = models.FloatField(default=0)
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+    def save(self):
+        self.total = self.subtotal - self.descuento
+        super(FacturaEnc, self).save()
+    
+    class Meta:
+        verbose_name = 'Encabezado Factura'
+        verbose_name_plural = 'Encabezados Factura'
+
+class FacturaDet(ClaseModelo2):
+    factura = models.ForeignKey(FacturaEnc, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(default=0)
+    precio = models.FloatField(default=0)
+    subtotal = models.FloatField(default=0)
+    descuento = models.FloatField(default=0)
+    total = models.FloatField(default=0)
+    
+    def __str__(self):
+        return '{}'.format(self.producto)
+    
+    def save(self):
+        self.subtotal = float(float(int(self.cantidad))*float(self.precio))
+        self.total = self.subtotal - float(self.descuento)
+        super(FacturaDet, self).save()
+        
+    class Meta:
+        verbose_name = 'Detalle Factura'
+        verbose_name_plural = 'Detalles Facturas'
