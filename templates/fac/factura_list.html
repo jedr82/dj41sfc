@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Listado de Facturas</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        {% if not obj %}
+        <div class="alert alert-info">No hay facturas</div>
+        {% else %}
+        <div class="buttons-toolbar">
+            <a class="dropdown-item" ><i class="far fa-calendar-plus"></i> Nuevo</a>
+        </div>
+        <table data-toggle="table"
+               data-pagination="true"
+               data-search="true"
+               data-show-columns="true"
+               data-show-toggle="true"
+               data-show-fullscreen="true"
+               data-toolbar=".buttons-toolbar"
+               data-locale="es-AR"
+        >
+            <thead>
+            <th data-field="id" data-sortable="true"></th>
+            <th data-field="cliente">Nombres</th>
+            <th data-field="fecha">Apellidos</th>
+            <th data-field="subtotal">tipo</th>
+            <th data-field="id">Teléfono</th>
+            <th data-field="id">Estado</th>
+            <th class="all">Acciones</th>
+            </thead>
+            <tbody>
+            {% for item in obj %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.nombres }}</td>
+                <td>{{ item.apellidos }}</td>
+                <td>{{ item.tipo }}</td>
+                <td>{{ item.celular }}</td>
+                <td>
+                    <div onclick="inactivar({{ item.id }})">
+                        {% if item.estado %}
+                        <i class="far fa-thumbs-up text-primary"></i>
+                        {% else %}
+                        <i class="far fa-thumbs-down text-danger"></i>
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-circle btn-sm" onclick="return abrir_modal('{% url 'fac_app:cliente_edit' item.id %}')">
+                        <i class="far fa-edit"></i></button>
+                    <button class="btn btn-danger btn-circle btn-sm" onclick="return abrir_modal('{# url 'cmp_app:proveedor_inactivar_modal' item.id #}')">
+                        <i class="far fa-thumbs-down"></i>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock page_content %}
+
+{% block js_page %}
+<script>
+
+</script>
+{% endblock js_page %}

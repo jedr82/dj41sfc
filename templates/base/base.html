@@ -24,7 +24,7 @@
     <!-- JQuery DateTimePicker -->
     <link href="{% static 'base/vendor/datetimepicker/jquery.datetimepicker.min.css' %}" rel="stylesheet">
     <!-- Bootstrap Table -->
-    <link href="{% static 'base/vendor/bootstrap-table/dist/bootstrap-table.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.1/dist/bootstrap-table.min.css">
 
 </head>
 
@@ -94,6 +94,9 @@
                     <h6 class="collapse-header">Ventas:</h6>
                     {% if perms.cmp.view_cliente %}
                     <a class="collapse-item" href="{% url 'fac_app:clientes_list' %}">Clientes</a>
+                    {% endif %}
+                    {% if perms.fac.view_facturaenc %}
+                    <a class="collapse-item" href="{% url 'fac_app:facturas_list' %}">Facturas</a>
                     {% endif %}
                 </div>
             </div>
@@ -441,9 +444,10 @@
 <!-- JQueryConfirm plugins -->
 <script src="{% static 'base/vendor/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
 <!-- JQuery Datetime Pickeer plugins -->
-<script src="{% static 'base/vendor/bootstrap-table/dist/bootstrap-table.min.js' %}"></script>
-<!-- Bootstrap Table plugins -->
 <script src="{% static 'base/vendor/datetimepicker/jquery.datetimepicker.full.min.js' %}"></script>
+<!-- Bootstrap Table plugins -->
+<script src="https://unpkg.com/bootstrap-table@1.21.1/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table-locale-all.min.js"></script>
 
 <script>
         $(document).ready(function () {

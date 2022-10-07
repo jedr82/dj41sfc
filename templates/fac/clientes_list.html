@@ -21,9 +21,13 @@
         {% if not obj %}
         <div class="alert alert-info">No hay clientes</div>
         {% else %}
-        <!--<table class="table table-sm table-striped table-hover dt-responsive nowrap" id="tbl_listado">
+        <div class="buttons-toolbar">
+            <a class="dropdown-item" onclick="return abrir_modal('{% url 'fac_app:cliente_add' %}')" ><i class="far fa-calendar-plus"></i> Nuevo</a>
+        </div>
+        <table data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-toggle="true"
+               data-show-fullscreen="true" data-toolbar=".buttons-toolbar" data-locale="es-AR">
             <thead>
-            <th>Id</th>
+            <th data-field="id" data-sortable="true">Id</th>
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>tipo</th>
@@ -39,12 +43,14 @@
                 <td>{{ item.apellidos }}</td>
                 <td>{{ item.tipo }}</td>
                 <td>{{ item.celular }}</td>
-                <td onclick="inactivar({{ item.id }})">
-                    {% if item.estado %}
-                    <i class="far fa-thumbs-up text-primary"></i>
-                    {% else %}
-                    <i class="far fa-thumbs-down text-danger"></i>
-                    {% endif %}
+                <td>
+                    <div onclick="inactivar({{ item.id }})">
+                        {% if item.estado %}
+                        <i class="far fa-thumbs-up text-primary"></i>
+                        {% else %}
+                        <i class="far fa-thumbs-down text-danger"></i>
+                        {% endif %}
+                    </div>
                 </td>
                 <td>
                     <button class="btn btn-warning btn-circle btn-sm" onclick="return abrir_modal('{% url 'fac_app:cliente_edit' item.id %}')">
@@ -56,8 +62,7 @@
             </tr>
             {% endfor %}
             </tbody>
-        </table> -->
-        <table id="tbl_listado"></table>
+        </table>
         {% endif %}
     </div>
 </div>
@@ -90,38 +95,7 @@
         });
     }
     $(document).ready(function() {
-        $('#tbl_listado').bootstrapTable({
-            pagination: true,
-            search: true,
-            columns: [
-            {
-                field: 'id',
-                title: 'ID'
-            },
-            {
-                field: 'nombres',
-                title: 'Nombres'
-            },
-            {
-                field: 'apellidos',
-                title: 'Apellidos'
-            },
-            {
-                field: 'tipo',
-                title: 'TipoCliente'
-            },
-            {
-                field: 'celular',
-                title: 'Telefono'
-            },
-            {
-                field: 'estado',
-                title: 'Estado'
-            }],
-            data: [{
 
-            }]
-        });
     });
 </script>
 {% endblock js_page %}
